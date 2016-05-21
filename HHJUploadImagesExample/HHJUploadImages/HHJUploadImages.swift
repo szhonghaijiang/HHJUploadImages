@@ -44,6 +44,7 @@ public class HHJUploadImage: NSObject, NSURLSessionDelegate {
     func uploadimages(images:[UIImage], stringUrl: String, params: [String: String], blocK:HHJUploadImagesBlock?)  {
         assert(images.count > 0, "上传的图片数组不能为空！")
         currentImageIndex = 0
+        currentImageRepeatCount = 0
         let image = images[currentImageIndex]
         self.images = images
         self.block = blocK
