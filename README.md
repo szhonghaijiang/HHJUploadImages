@@ -3,6 +3,7 @@ A swift upload image tool.
 HHJUploadImages是一个用来上传图片的swift工具类
 #如何在项目中导入
 * HHJUploadImages只有一个文件，就是HHJUploadImages.swift，你可以把它直接拖进过程里面。
+* 当然我是建议用cocospod导入的，用cocospod导入的最低版本是iOS8：
 ```
 platform :ios, '8.0'
 use_frameworks!
