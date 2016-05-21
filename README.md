@@ -13,7 +13,7 @@ pod 'HHJUploadImages', '~> 1.0.0'
 HHJUploadImages有一个公开的类方法：
 func uploadimages(images:[UIImage], stringUrl: String, params: [String: String], blocK: HHJUploadImagesBlock?)
 
-使用一下属性来修改个性化需求
+使用以下属性来修改个性化需求
 
 repeatWhileUploadFail:上传某张图片图片失败后重复的次数，默认是0次，即不重复，此参数设置一次后，对以后所有上传动作生效
 
