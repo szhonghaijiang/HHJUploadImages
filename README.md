@@ -16,4 +16,5 @@ func uploadimages(images:[UIImage], stringUrl: String, params: [String: String],
 使用一下属性来修改个性化需求
 
 repeatWhileUploadFail:上传某张图片图片失败后重复的次数，默认是0次，即不重复，此参数设置一次后，对以后所有上传动作生效
+
 stopWhileUploadFail:上传图片失败后是否还停止上传还未上传的图片，默认是false，此参数设置一次后，对以后所有上传动作生效
