@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 public typealias HHJUploadImagesBlock = (data: NSData?, response: NSURLResponse?, error: NSError?, index: Int) -> Void
-public class HHJUploadImage {
+public class HHJUploadImage: NSObject, NSURLSessionDelegate {
     
     /**
      //公开一个类方法用来上传图片
@@ -23,7 +23,10 @@ public class HHJUploadImage {
         HHJUploadImage.hhjUploadImageInstance.uploadimages(images, stringUrl: stringUrl, params: params, blocK: blocK)
     }
     
-    
+    /// 上传某张图片图片失败后重复的次数，默认是0次，即不重复，此参数设置一次后，对以后所有上传动作生效
+    public static var repeatUploadWhileFaile = 0
+    /// 上传图片失败后是否还停止上传还未上传的图片，默认是false，此参数设置一次后，对以后所有上传动作生效
+    public static var stopWhileUploadFail = false
     
     static let hhjUploadImageInstance = HHJUploadImage()
     /**
@@ -35,6 +38,7 @@ public class HHJUploadImage {
      - parameter blocK:     回调Block
      */
     var currentImageIndex = 0
+    var currentImageRepeatCount = 0
     var images: [UIImage]!
     var block: HHJUploadImagesBlock?
     func uploadimages(images:[UIImage], stringUrl: String, params: [String: String], blocK:HHJUploadImagesBlock?)  {
@@ -88,11 +92,23 @@ public class HHJUploadImage {
         
         var dataTask: NSURLSessionUploadTask! = nil
         dataTask = session.uploadTaskWithRequest(request, fromData: nil) { (data, response, error) -> Void in
+            //回调
             if let tempBlock = self.block {
                 tempBlock(data: data, response: response, error: error, index: self.currentImageIndex)
             }
+            //处理错误的逻辑
+            if error != nil {
+                //小于最大的上传次数
+                if self.currentImageRepeatCount < HHJUploadImage.repeatUploadWhileFaile {
+                    self.currentImageRepeatCount += 1
+                    self.uploadimage(image, stringUrl: stringUrl, params: params)
+                    return
+                }
+            }
+            
+            self.currentImageRepeatCount = 0
             self.currentImageIndex += 1
-            if self.currentImageIndex >= self.images.count { return }
+            if self.currentImageIndex >= self.images.count || (error != nil && HHJUploadImage.stopWhileUploadFail)  { return }
             let image = self.images[self.currentImageIndex]
             self.uploadimage(image, stringUrl: stringUrl, params: params)
         }

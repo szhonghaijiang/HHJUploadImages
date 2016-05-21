@@ -15,6 +15,8 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        HHJUploadImage.repeatUploadWhileFaile = 2
+        HHJUploadImage.stopWhileUploadFail = true
         
         
         // Do any additional setup after loading the view, typically from a nib.
